@@ -60,10 +60,10 @@ return [
     */
 
     'providers' => [
-        // 'users' => [
-        //     'driver' => 'eloquent',
-        //     'model' => env('AUTH_MODEL', App\Models\User::class),
-        // ],
+        'users' => [
+            'driver' => 'eloquent',
+            'model' => env('AUTH_MODEL', App\Models\User::class),
+        ],
 
         // 'users' => [
         //     'driver' => 'database',
@@ -111,5 +111,17 @@ return [
     */
 
     'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Registration Settings
+    |--------------------------------------------------------------------------
+    |
+    | This option controls whether new user registration is enabled via
+    | the registration form. Set to false to disable public registration.
+    |
+    */
+
+    'allow_registration' => env('ALLOW_REGISTRATION', true),
 
 ];

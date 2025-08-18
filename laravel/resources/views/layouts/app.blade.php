@@ -25,6 +25,25 @@
 </head>
 <body class="bg-gray-50 text-gray-900">
 <div class="min-h-screen">
+    @auth
+        <nav class="bg-white shadow">
+            <div class="container mx-auto px-4 py-3">
+                <div class="flex justify-between items-center">
+                    <h1 class="text-xl font-semibold">Reading List</h1>
+                    <div class="flex items-center space-x-4">
+                        <span class="text-gray-600">{{ auth()->user()->name }}</span>
+                        <form action="{{ route('auth.logout') }}" method="POST" class="inline">
+                            @csrf
+                            <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 text-sm">
+                                Logout
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    @endauth
+
     @yield('content')
 </div>
 </body>
