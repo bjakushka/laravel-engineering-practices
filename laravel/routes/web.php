@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\ReadingListController;
+use App\Http\Controllers\BookmarksController;
 use Illuminate\Support\Facades\Route;
 
 Route::name('auth.')->group(function () {
@@ -26,6 +26,6 @@ Route::name('auth.')->group(function () {
 });
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/', [ReadingListController::class, 'index'])
+    Route::get('/', [BookmarksController::class, 'index'])
         ->name('index');
 });

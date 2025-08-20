@@ -29,7 +29,9 @@
         <nav class="bg-white shadow">
             <div class="container mx-auto px-4 py-3">
                 <div class="flex justify-between items-center">
-                    <h1 class="text-xl font-semibold">Reading List</h1>
+                    <h1 class="text-xl  font-semibold">
+                        <a href="{{ route('index') }}">Reading List</a>
+                    </h1>
                     <div class="flex items-center space-x-4">
                         <span class="text-gray-600">{{ auth()->user()->name }}</span>
                         <form action="{{ route('auth.logout') }}" method="POST" class="inline">
