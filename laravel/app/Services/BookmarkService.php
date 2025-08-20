@@ -14,4 +14,14 @@ class BookmarkService
             ->orderBy('created_at', 'desc')
             ->paginate($perPage);
     }
+
+    public function createBookmark(int $userId, string $url, string $title): Bookmark
+    {
+        return Bookmark::query()->create([
+            'user_id' => $userId,
+            'url' => $url,
+            'title' => $title,
+            'is_read' => false,
+        ]);
+    }
 }

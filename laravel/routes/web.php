@@ -28,4 +28,10 @@ Route::name('auth.')->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('/', [BookmarksController::class, 'index'])
         ->name('index');
+
+    Route::get('/bookmarks/create', [BookmarksController::class, 'create'])
+        ->name('bookmarks.create');
+
+    Route::post('/bookmarks', [BookmarksController::class, 'store'])
+        ->name('bookmarks.store');
 });

@@ -4,6 +4,13 @@
 
 @section('content')
     <div class="container mx-auto max-w-2xl px-4 py-8">
+        <div class="mb-6">
+            <a href="{{ route('bookmarks.create') }}"
+               class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                Add Bookmark
+            </a>
+        </div>
+
         @if($bookmarks->count() > 0)
             <div class="flex flex-col space-y-2">
                 @foreach($bookmarks as $bookmark)
