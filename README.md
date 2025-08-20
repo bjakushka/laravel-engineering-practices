@@ -51,7 +51,21 @@ Follow these steps to get "Reading List" up and running:
     docker exec reading-list-laravel php artisan key:generate
     ```
 
-6.  **External Nginx Configuration (Example for `reading-list.test`):**
+6.  **Run Database Migrations:**
+
+    Once the application key is generated, run the database migrations:
+    ```bash
+    docker exec reading-list-laravel php artisan migrate
+    ```
+
+7.  **Create First User (Optional):**
+
+    To create your first user account, you can use the artisan command:
+    ```bash
+    docker exec reading-list-laravel php artisan user:create
+    ```
+
+8.  **External Nginx Configuration (Example for `reading-list.test`):**
 
     If you are using an external Nginx, configure it to proxy requests to the `reading-list-nginx` service.
 
@@ -78,7 +92,7 @@ Follow these steps to get "Reading List" up and running:
     ```
     *NOTE:* For local development, you might need to add `reading-list.test` to your `/etc/hosts` file pointing to your Docker host's IP (e.g., `127.0.0.1 reading-list.test`).
 
-7.  **Trust SSL Certificate (for local HTTPS):**
+9.  **Trust SSL Certificate (for local HTTPS):**
     
     If you generated a self-signed certificate for `reading-list.test`, you will need to trust it in your operating system's keychain to avoid browser warnings. (Specific steps vary by OS).
 
@@ -102,11 +116,11 @@ NETWORK_NAME=your_existing_network_name
 
 ```bash
 # Temporarily override network name
-NETWORK_NAME=docker_redmine docker-compose up -d
+NETWORK_NAME=your_network_name docker compose up -d
 
 # Or export for session
 export NETWORK_NAME=docker_my_external_network
-docker-compose up -d
+docker compose up -d
 ```
 
 **Important:** The network must already exist (created by your external nginx setup). If you're unsure of the network name, list existing networks:
