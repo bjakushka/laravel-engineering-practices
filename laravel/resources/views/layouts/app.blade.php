@@ -46,6 +46,34 @@
         </nav>
     @endauth
 
+    @if(session('success'))
+        <div class="bg-green-50 border border-green-200 p-4">
+            <div class="container mx-auto max-w-2xl px-4">
+                <div class="flex">
+                    <div class="ml-3">
+                        <p class="text-sm font-medium text-green-800">
+                            {{ session('success') }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="bg-red-50 border border-red-200 p-4">
+            <div class="container mx-auto max-w-2xl px-4">
+                <div class="flex">
+                    <div class="ml-3">
+                        <p class="text-sm font-medium text-red-800">
+                            {{ session('error') }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
     @yield('content')
 </div>
 </body>
