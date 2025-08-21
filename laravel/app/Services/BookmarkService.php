@@ -24,4 +24,12 @@ class BookmarkService
             'is_read' => false,
         ]);
     }
+
+    public function deleteUserBookmark(int $userId, int $bookmarkId): bool
+    {
+        return Bookmark::query()
+            ->where('user_id', $userId)
+            ->where('id', $bookmarkId)
+            ->delete() > 0;
+    }
 }

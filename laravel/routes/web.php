@@ -34,4 +34,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/bookmarks', [BookmarksController::class, 'store'])
         ->name('bookmarks.store');
+
+    Route::delete('/bookmarks/{id}', [BookmarksController::class, 'destroy'])
+        ->name('bookmarks.destroy');
 });

@@ -43,6 +43,18 @@
                                         {{ $bookmark->created_at->format('M j, Y') }}
                                     </div>
                                 </div>
+                                <div>
+                                    <form action="{{ route('bookmarks.destroy', ['id' => $bookmark->id ]) }}" method="POST" class="inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit"
+                                                class="text-red-600 hover:text-red-800 focus:outline-none"
+                                                title="Delete Bookmark"
+                                                onclick="return confirm('Are you sure you want to delete this bookmark?');">
+                                            del
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>

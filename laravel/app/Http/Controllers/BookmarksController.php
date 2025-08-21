@@ -55,4 +55,20 @@ class BookmarksController extends Controller
             ->route('index')
             ->with('success', 'bookmark created successfully');
     }
+
+    public function destroy(int $id): RedirectResponse
+    {
+        $result = $this->bookmarkService->deleteUserBookmark(
+            auth()->id(), $id
+        );
+
+        if (!$result) {
+            return redirect()->route('index')->with([
+                'error', 'bookmark not found or could not be deleted'
+            ]);
+        }
+
+        return redirect()->route('index')
+            ->with('success', 'bookmark deleted successfully');
+    }
 }
