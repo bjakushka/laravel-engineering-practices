@@ -16,8 +16,8 @@
                 @foreach($bookmarks as $bookmark)
                     <div class="bg-white rounded-lg shadow border hover:shadow-md transition-shadow duration-200">
                         <div class="px-3 py-2">
-                            <div class="flex sm:flex-row sm:items-center sm:justify-between gap-4">
-                                <div class="flex-1 min-w-0">
+                            <div class="flex flex-row items-center justify-between gap-4">
+                                <div class="flex-1 min-w-0 truncate">
                                     <a href="{{ $bookmark->url }}"
                                        target="_blank"
                                        rel="noopener noreferrer"
