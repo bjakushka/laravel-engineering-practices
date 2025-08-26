@@ -24,8 +24,6 @@ services:
       - "9000"
     networks:
       - external_network
-    environment:
-      - DB_DATABASE=/var/www/html/database/sqlite/database.sqlite
 
 networks:
   external_network:

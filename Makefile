@@ -16,6 +16,7 @@ help: ## show available commands
 	@echo "  clear      clear all laravel caches"
 	@echo "  shell      enter laravel container shell"
 	@echo "  logs       show laravel logs"
+	@echo "  test       run laravel tests"
 
 up:
 	$(DOCKER_COMPOSE) up -d
@@ -39,5 +40,8 @@ shell:
 
 logs:
 	$(EXEC_LARAVEL) sh -c "tail -f storage/logs/laravel.log"
+
+test:
+	$(EXEC_LARAVEL) sh -c "./vendor/bin/phpunit"
 
 .PHONY: help up down clear shell logs
