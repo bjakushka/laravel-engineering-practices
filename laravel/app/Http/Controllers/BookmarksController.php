@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Pagination\PaginatorFactory;
 use App\Services\BookmarkService;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
@@ -18,12 +19,17 @@ class BookmarksController extends Controller
 
     public function index(Request $request): View
     {
-        $bookmarks = $this->bookmarkService->getUserBookmarks(
+        $bookmarksPaginated = $this->bookmarkService->getUserBookmarks(
             auth()->id(),
+            $request->get('page', 1),
             $request->get('per_page', 10)
         );
 
-        return view('bookmarks.index', compact('bookmarks'));
+        return view('bookmarks.index', [
+            'bookmarks' => PaginatorFactory::fromPaginatedResult(
+                $bookmarksPaginated, $request
+            )
+        ]);
     }
 
     public function create(): View
@@ -36,6 +42,7 @@ class BookmarksController extends Controller
         $request->validate([
             'url' => ['required', 'url'],
             'title' => ['required', 'string', 'max:255'],
+            'action' => ['string', 'in:create,create_continue', 'sometimes'],
         ]);
 
         $this->bookmarkService->createBookmark(
@@ -63,9 +70,9 @@ class BookmarksController extends Controller
         );
 
         if (!$result) {
-            return redirect()->route('index')->with([
+            return redirect()->route('index')->with(
                 'error', 'bookmark not found or could not be deleted'
-            ]);
+            );
         }
 
         return redirect()->route('index')

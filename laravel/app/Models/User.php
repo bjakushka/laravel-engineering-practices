@@ -2,7 +2,11 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User AS AuthUser;
+use Illuminate\Support\Facades\Hash;
 
 /**
  * Class User
@@ -16,9 +20,15 @@ use Illuminate\Foundation\Auth\User AS AuthUser;
  * @property string|null $remember_token Token for "remember me" functionality.
  * @property \Illuminate\Support\Carbon|null $created_at Timestamp when the user was created.
  * @property \Illuminate\Support\Carbon|null $updated_at Timestamp when the user was last updated.
+ *
+ * @method static \Database\Factories\UserFactory factory()
+ *
+ * @see \Database\Factories\UserFactory
  */
 class User extends AuthUser
 {
+    use HasFactory;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -49,4 +59,22 @@ class User extends AuthUser
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
+
+    /**
+     * Get the bookmarks for the user.
+     *
+     * @return HasMany
+     */
+    public function bookmarks(): HasMany
+    {
+        return $this->hasMany(Bookmark::class);
+    }
+
+    protected function password(): Attribute
+    {
+        return Attribute::make(
+            set: fn ($value) => Hash::needsRehash($value) ?
+                Hash::make($value) : $value,
+        );
+    }
 }

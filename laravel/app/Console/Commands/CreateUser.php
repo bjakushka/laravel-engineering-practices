@@ -23,7 +23,7 @@ class CreateUser extends Command
     protected $description = 'Create a new user with hashed password';
 
     public function __construct(
-        private AuthService $authService
+        readonly private AuthService $authService
     ) {
         parent::__construct();
     }

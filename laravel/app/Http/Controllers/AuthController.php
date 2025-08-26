@@ -23,7 +23,7 @@ class AuthController extends Controller
     public function showRegisterForm(): View|RedirectResponse
     {
         if (!config('auth.allow_registration')) {
-            return redirect('/');
+            return redirect()->route('index');
         }
 
         return view('auth.register');
@@ -38,6 +38,7 @@ class AuthController extends Controller
         $remember = (bool) $request->input('remember', false);
 
         if ($this->authService->login($credentials, $remember)) {
+            $request->session()->regenerate();
             return redirect()->intended();
         }
 
@@ -49,7 +50,7 @@ class AuthController extends Controller
     public function register(Request $request): RedirectResponse
     {
         if (!config('auth.allow_registration')) {
-            return redirect('/');
+            return redirect()->route('index');
         }
 
         $newUserData = $request->validate([
@@ -65,12 +66,16 @@ class AuthController extends Controller
 
         $this->authService->register($newUserData);
 
-        return redirect('/');
+        return redirect()->route('index');
     }
 
-    public function logout(): RedirectResponse
+    public function logout(Request $request): RedirectResponse
     {
         $this->authService->logout();
-        return redirect('/');
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('index');
     }
 }
