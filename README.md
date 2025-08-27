@@ -134,3 +134,81 @@ After starting or restarting Reading List services, you may need to restart your
 ```bash
 docker restart your_external_nginx_container
 ```
+
+## Testing
+
+The project uses PHPUnit for testing with a comprehensive test suite covering feature and unit tests.
+
+### Running Tests via Command Line
+
+**Run all tests:**
+```bash
+docker exec reading-list-laravel composer test
+```
+
+**Alternative method:**
+```bash
+docker exec reading-list-laravel php artisan test
+```
+
+**Run specific test files:**
+```bash
+docker exec reading-list-laravel php artisan test tests/Feature/Http/Controllers/BookmarksController/IndexTest.php
+```
+
+**Run tests with coverage (if configured):**
+```bash
+docker exec reading-list-laravel php artisan test --coverage
+```
+
+### PhpStorm IDE Configuration
+
+The key is using your Docker Compose service as the PHP interpreter so PhpStorm 
+runs tests inside the container with the correct environment.
+
+To run and debug tests directly from PhpStorm IDE:
+
+#### 1. Configure PHP Interpreter for Docker
+
+1. **File → Settings** (or **PhpStorm → Preferences** on macOS)
+2. **PHP → CLI Interpreter**
+3. Click **"+"** → **"From Docker, Vagrant, VM, WSL, Remote..."**
+4. Select **Docker Compose**
+5. Configuration files: `./docker-compose.yml`
+6. Service: `laravel`
+7. PHP executable path: `/usr/local/bin/php`
+8. Click **OK**
+
+#### 2. Set up PHPUnit Test Framework
+
+1. **PHP → Test Frameworks**
+2. Click **"+"** → **PHPUnit by Remote Interpreter**
+3. Choose your Docker interpreter from step 1
+4. PHPUnit library:
+   - **Use Composer autoloader**: `/var/www/html/vendor/autoload.php`
+   - **Path to PHPUnit**: should auto-detect as `/var/www/html/vendor/bin/phpunit`
+5. Test Runner:
+   - **Default configuration file**: `/var/www/html/phpunit.xml`
+   - **Default bootstrap file**: `/var/www/html/vendor/autoload.php`
+
+#### 3. Configure Run/Debug Configuration
+
+1. **Run → Edit Configurations**
+2. Click **"+"** → **PHPUnit**
+3. Name: `Laravel Tests`
+4. Test scope: **Defined in the configuration file**
+5. Interpreter: Your Docker interpreter
+6. Working directory: should auto-detect as `/var/www/html`
+
+#### 4. Running Tests from IDE
+
+- **Run all tests**: Right-click on `tests` folder → **Run 'tests'**
+- **Run specific test**: Right-click on test file → **Run 'TestName'**
+- **Run single method**: Click gutter icon next to test method
+- **Debug tests**: Use **Debug** instead of **Run**
+
+#### Additional Tips
+
+- **Path mappings**: PhpStorm should auto-detect them, but verify in **PHP → Path Mappings**
+- **Environment variables**: Set `APP_ENV=testing` in run configuration if needed
+- **Xdebug**: Enable in your Docker PHP configuration for debugging support
