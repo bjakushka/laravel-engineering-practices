@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Database\Factories\BookmarkFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -18,13 +19,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property User $user User who created the bookmark
- *
- * @method static \Database\Factories\BookmarkFactory factory()
- *
- * @see \Database\Factories\BookmarkFactory
  */
 class Bookmark extends Model
 {
+    /** @use HasFactory<BookmarkFactory> */
     use HasFactory;
 
     protected $fillable = [
@@ -40,6 +38,9 @@ class Bookmark extends Model
         'read_at' => 'datetime',
     ];
 
+    /**
+     * @return BelongsTo<User, $this> The user who created the bookmark
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

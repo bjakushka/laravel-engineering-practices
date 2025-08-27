@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -20,19 +21,16 @@ use Illuminate\Support\Facades\Hash;
  * @property string|null $remember_token Token for "remember me" functionality.
  * @property \Illuminate\Support\Carbon|null $created_at Timestamp when the user was created.
  * @property \Illuminate\Support\Carbon|null $updated_at Timestamp when the user was last updated.
- *
- * @method static \Database\Factories\UserFactory factory()
- *
- * @see \Database\Factories\UserFactory
  */
 class User extends AuthUser
 {
+    /** @use HasFactory<UserFactory> */
     use HasFactory;
 
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int, string>
+     * @var list<string>
      */
     protected $fillable = [
         'name',
@@ -43,7 +41,7 @@ class User extends AuthUser
     /**
      * The attributes that should be hidden for serialization.
      *
-     * @var array<int, string>
+     * @var list<string>
      */
     protected $hidden = [
         'password',
@@ -63,13 +61,18 @@ class User extends AuthUser
     /**
      * Get the bookmarks for the user.
      *
-     * @return HasMany
+     * @return HasMany<Bookmark, $this> The user's bookmarks.
      */
     public function bookmarks(): HasMany
     {
         return $this->hasMany(Bookmark::class);
     }
 
+    /**
+     * Automatically hash the password when setting it.
+     * @return Attribute<string, string>
+     *     The password attribute with hashing logic.
+     */
     protected function password(): Attribute
     {
         return Attribute::make(

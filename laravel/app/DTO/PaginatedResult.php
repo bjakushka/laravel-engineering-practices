@@ -3,12 +3,12 @@
 namespace App\DTO;
 
 /**
- * @template T
+ * @template-covariant TItem
  */
 readonly class PaginatedResult
 {
     /**
-     * @param T[] $items
+     * @param TItem[] $items
      * @param int $total
      * @param int $perPage
      * @param int $currentPage
