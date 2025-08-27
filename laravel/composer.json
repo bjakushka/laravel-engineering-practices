@@ -12,6 +12,7 @@
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
+        "larastan/larastan": "^3.6",
         "laravel/pail": "^1.2.2",
         "laravel/pint": "^1.13",
         "mockery/mockery": "^1.6",
@@ -39,6 +40,10 @@
         "test": [
             "@php artisan config:clear --ansi",
             "@php artisan test"
+        ],
+        "phpstan": "phpstan analyse --memory-limit=2G",
+        "static-analysis": [
+            "@phpstan"
         ]
     },
     "extra": {
