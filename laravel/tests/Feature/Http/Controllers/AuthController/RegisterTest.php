@@ -37,7 +37,8 @@ class RegisterTest extends TestCase
         $response->assertStatus(302);
     }
 
-    public function testRegisterRequestEmptyRequestData(): void {
+    public function testRegisterRequestEmptyRequestData(): void
+    {
         config(['auth.allow_registration' => true]);
         $response = $this->post(route('auth.register'));
 
@@ -49,7 +50,8 @@ class RegisterTest extends TestCase
         $response->assertStatus(302);
     }
 
-    public function testRegisterRequestNotValidEmail(): void {
+    public function testRegisterRequestNotValidEmail(): void
+    {
         config(['auth.allow_registration' => true]);
         $response = $this->post(route('auth.register'), [
             'name' => 'Valid Name',
@@ -64,7 +66,8 @@ class RegisterTest extends TestCase
         $response->assertStatus(302);
     }
 
-    public function testRegisterRequestNotValidNameTooShort(): void {
+    public function testRegisterRequestNotValidNameTooShort(): void
+    {
         config(['auth.allow_registration' => true]);
         $response = $this->post(route('auth.register'), [
             'name' => str_repeat('a', 2),
@@ -79,7 +82,8 @@ class RegisterTest extends TestCase
         $response->assertStatus(302);
     }
 
-    public function testRegisterRequestNotValidNameTooLong(): void {
+    public function testRegisterRequestNotValidNameTooLong(): void
+    {
         config(['auth.allow_registration' => true]);
         $response = $this->post(route('auth.register'), [
             'name' => str_repeat('a', 256),
@@ -94,10 +98,11 @@ class RegisterTest extends TestCase
         $response->assertStatus(302);
     }
 
-    public function testRegisterRequestNotValidEmailTooLong(): void {
+    public function testRegisterRequestNotValidEmailTooLong(): void
+    {
         config(['auth.allow_registration' => true]);
         $response = $this->post(route('auth.register'), [
-            'name' => "Valid Name",
+            'name' => 'Valid Name',
             'email' => str_repeat('a', 244) . '@example.com',
             'password' => 'strong_password',
             'password_confirmation' => 'strong_password',
@@ -109,7 +114,8 @@ class RegisterTest extends TestCase
         $response->assertStatus(302);
     }
 
-    public function testRegisterRequestNotPasswordConfirmation(): void {
+    public function testRegisterRequestNotPasswordConfirmation(): void
+    {
         config(['auth.allow_registration' => true]);
         $response = $this->post(route('auth.register'), [
             'name' => 'Valid Name',
@@ -123,7 +129,8 @@ class RegisterTest extends TestCase
         $response->assertStatus(302);
     }
 
-    public function testRegisterRequestWrongPasswordConfirmation(): void {
+    public function testRegisterRequestWrongPasswordConfirmation(): void
+    {
         config(['auth.allow_registration' => true]);
         $response = $this->post(route('auth.register'), [
             'name' => 'Valid Name',
@@ -138,7 +145,8 @@ class RegisterTest extends TestCase
         $response->assertStatus(302);
     }
 
-    public function testRegisterRequestNotValidPasswordTooShort(): void {
+    public function testRegisterRequestNotValidPasswordTooShort(): void
+    {
         config(['auth.allow_registration' => true]);
         $response = $this->post(route('auth.register'), [
             'name' => 'Valid Name',
@@ -153,7 +161,8 @@ class RegisterTest extends TestCase
         $response->assertStatus(302);
     }
 
-    public function testRegisterRequestNotValidPasswordTooLong(): void {
+    public function testRegisterRequestNotValidPasswordTooLong(): void
+    {
         config(['auth.allow_registration' => true]);
         $response = $this->post(route('auth.register'), [
             'name' => 'Valid Name',
@@ -168,7 +177,8 @@ class RegisterTest extends TestCase
         $response->assertStatus(302);
     }
 
-    public function testRegisterRequestWithAlreadyExistingEmail(): void {
+    public function testRegisterRequestWithAlreadyExistingEmail(): void
+    {
         config(['auth.allow_registration' => true]);
         $existingUser = User::factory()->create([
             'email' => 'existing.email@gmail.com',
@@ -187,7 +197,8 @@ class RegisterTest extends TestCase
         $response->assertStatus(302);
     }
 
-    public function testRegisterRequestWhenRegistrationNotAllowed(): void {
+    public function testRegisterRequestWhenRegistrationNotAllowed(): void
+    {
         config(['auth.allow_registration' => false]);
         $response = $this->post(route('auth.register'), [
             'name' => 'Valid Name',
@@ -200,7 +211,8 @@ class RegisterTest extends TestCase
         $response->assertRedirect(route('index'));
     }
 
-    public function testRegisterRequestSuccessfulRedirectAfter(): void {
+    public function testRegisterRequestSuccessfulRedirectAfter(): void
+    {
         config(['auth.allow_registration' => true]);
         $response = $this->post(route('auth.register'), [
             'name' => 'Valid Name',
@@ -213,7 +225,8 @@ class RegisterTest extends TestCase
         $response->assertRedirect(route('index'));
     }
 
-    public function testRegisterRequestSuccessful(): void {
+    public function testRegisterRequestSuccessful(): void
+    {
         config(['auth.allow_registration' => true]);
         $this->post(route('auth.register'), [
             'name' => 'Valid Name',
@@ -223,11 +236,12 @@ class RegisterTest extends TestCase
         ]);
 
         $this->assertDatabaseHas('users', [
-            'email' => 'valid@example.com'
+            'email' => 'valid@example.com',
         ]);
     }
 
-    public function testRegisterRequestSuccessfulAutoAuthenticated(): void {
+    public function testRegisterRequestSuccessfulAutoAuthenticated(): void
+    {
         config(['auth.allow_registration' => true]);
         $this->post(route('auth.register'), [
             'name' => 'Valid Name',

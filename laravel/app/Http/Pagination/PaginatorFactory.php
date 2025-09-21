@@ -10,13 +10,18 @@ use Illuminate\Pagination\LengthAwarePaginator;
 class PaginatorFactory
 {
     /**
-     * @param PaginatedResult<Model> $result The paginated result containing items and pagination details.
-     * @param Request|null $request The HTTP request to extract URL and query parameters (optional).
+     * @param PaginatedResult<Model> $result The paginated result containing
+     *                                       items and pagination details
+     * @param Request|null $request The HTTP request to extract URL and query
+     *                              parameters (optional)
      *
-     * @return LengthAwarePaginator<int, Model> A LengthAwarePaginator instance for use in views.
+     * @return LengthAwarePaginator<int, Model> A LengthAwarePaginator instance
+     *                                          for use in views
      */
-    public static function fromPaginatedResult(PaginatedResult $result, ?Request $request): LengthAwarePaginator
-    {
+    public static function fromPaginatedResult(
+        PaginatedResult $result,
+        ?Request $request,
+    ): LengthAwarePaginator {
         return new LengthAwarePaginator(
             items: $result->items,
             total: $result->total,
@@ -25,7 +30,7 @@ class PaginatorFactory
             options: [
                 'path' => $request?->url() ?? '',
                 'query' => $request?->query() ?? [],
-            ]
+            ],
         );
     }
 }

@@ -23,7 +23,7 @@ class CreateUser extends Command
     protected $description = 'Create a new user with hashed password';
 
     public function __construct(
-        readonly private AuthService $authService
+        private readonly AuthService $authService,
     ) {
         parent::__construct();
     }
@@ -51,7 +51,8 @@ class CreateUser extends Command
             foreach ($validator->errors()->all() as $error) {
                 $this->error($error);
             }
-            return Command::FAILURE;
+
+            return self::FAILURE;
         }
 
         $user = $this->authService->register([
@@ -60,11 +61,11 @@ class CreateUser extends Command
             'password' => $password,
         ]);
 
-        $this->info("user created successfully!");
+        $this->info('user created successfully!');
         $this->info("id: {$user->id}");
         $this->info("name: {$user->name}");
         $this->info("email: {$user->email}");
 
-        return Command::SUCCESS;
+        return self::SUCCESS;
     }
 }

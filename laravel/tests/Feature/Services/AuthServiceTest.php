@@ -17,7 +17,8 @@ class AuthServiceTest extends TestCase
 
     private AuthService $authService;
 
-    protected function setUp(): void {
+    protected function setUp(): void
+    {
         parent::setUp();
 
         $this->authService = new AuthService();
@@ -35,7 +36,8 @@ class AuthServiceTest extends TestCase
         $this->assertFalse($result, 'Login should fail for incorrect credentials');
     }
 
-    public function testLoginCorrect(): void {
+    public function testLoginCorrect(): void
+    {
         $credentials = [
             'email' => 'existing@example.com',
             'password' => '12345678',
@@ -52,7 +54,8 @@ class AuthServiceTest extends TestCase
         $this->assertAuthenticated();
     }
 
-    public function testLoginEmptyCredentials(): void {
+    public function testLoginEmptyCredentials(): void
+    {
         $credentials = [
             'email' => '',
             'password' => '',
@@ -63,7 +66,8 @@ class AuthServiceTest extends TestCase
         $this->assertFalse($result, 'Login should fail for empty credentials');
     }
 
-    public function testLogout(): void {
+    public function testLogout(): void
+    {
         $user = User::factory()->create();
         $this->actingAs($user);
 
@@ -74,7 +78,8 @@ class AuthServiceTest extends TestCase
         $this->assertGuest();
     }
 
-    public function testRegisterNewUserWithCorrectData(): void {
+    public function testRegisterNewUserWithCorrectData(): void
+    {
         $userData = [
             'name' => 'New User',
             'email' => 'new.user@example.com',
@@ -89,7 +94,8 @@ class AuthServiceTest extends TestCase
         ]);
     }
 
-    public function testRegisterNewUserAutoAuthenticatedAfter(): void {
+    public function testRegisterNewUserAutoAuthenticatedAfter(): void
+    {
         $userData = [
             'name' => 'New User',
             'email' => 'new.user@example.com',
@@ -101,7 +107,8 @@ class AuthServiceTest extends TestCase
         $this->assertAuthenticatedAs($newUser);
     }
 
-    public function testRegisterNewUserReturnsUserInstance(): void {
+    public function testRegisterNewUserReturnsUserInstance(): void
+    {
         $userData = [
             'name' => 'New User',
             'email' => 'new.user@example.com',
@@ -115,7 +122,8 @@ class AuthServiceTest extends TestCase
         $this->assertEquals($userData['name'], $newUser->name);
     }
 
-    public function testRegisterNewUserPasswordHashing(): void {
+    public function testRegisterNewUserPasswordHashing(): void
+    {
         $userData = [
             'name' => 'New User',
             'email' => 'new.user@example.com',
@@ -128,7 +136,8 @@ class AuthServiceTest extends TestCase
         $this->assertTrue(Hash::check($userData['password'], $newUser->password));
     }
 
-    public function testRegisterExistingEmail(): void {
+    public function testRegisterExistingEmail(): void
+    {
         $notUniqueEmail = 'not.unique.email@gmail.com';
         User::factory()->create(['email' => $notUniqueEmail]);
 

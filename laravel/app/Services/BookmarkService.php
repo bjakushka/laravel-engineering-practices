@@ -27,7 +27,7 @@ class BookmarkService
             $page = 1;
         }
 
-        $maxPage = (int) ceil($total / $perPage);
+        $maxPage = (int)ceil($total / $perPage);
         if ($page > $maxPage) {
             $page = $maxPage;
         }

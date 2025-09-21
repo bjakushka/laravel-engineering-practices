@@ -13,7 +13,8 @@ class AuthService
      *
      * @return bool
      */
-    public function login(array $credentials, bool $remember = false): bool {
+    public function login(array $credentials, bool $remember = false): bool
+    {
         return Auth::attempt($credentials, $remember);
     }
 
@@ -22,7 +23,8 @@ class AuthService
      *
      * @return User
      */
-    public function register(array $newUserData): User {
+    public function register(array $newUserData): User
+    {
         $newUser = User::query()->create([
             'name' => $newUserData['name'],
             'email' => $newUserData['email'],

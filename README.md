@@ -212,3 +212,19 @@ To run and debug tests directly from PhpStorm IDE:
 - **Path mappings**: PhpStorm should auto-detect them, but verify in **PHP → Path Mappings**
 - **Environment variables**: Set `APP_ENV=testing` in run configuration if needed
 - **Xdebug**: Enable in your Docker PHP configuration for debugging support
+
+## Code Quality
+
+The project uses PHP CS Fixer for code formatting and PHPStan for static analysis.
+
+### PHP CS Fixer Configuration
+
+**Run code formatting:**
+```bash
+docker exec reading-list-laravel vendor/bin/php-cs-fixer fix
+```
+
+**Useful resources:**
+- [PHP CS Fixer Configurator](https://mlocati.github.io/php-cs-fixer-configurator) - Interactive tool for creating custom rule configurations
+- [Complete rules documentation](https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/blob/master/doc/rules/index.rst) - Detailed reference for all available formatting rules
+- [Official PHP CS Fixer website](https://cs.symfony.com/) - Main documentation and guides

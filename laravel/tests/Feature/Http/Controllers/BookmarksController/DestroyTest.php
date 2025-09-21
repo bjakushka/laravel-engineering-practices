@@ -19,7 +19,8 @@ class DestroyTest extends TestCase
         $response->assertStatus(302);
     }
 
-    public function testDestroyAvailableForLoggedInUsers(): void {
+    public function testDestroyAvailableForLoggedInUsers(): void
+    {
         $user = User::factory()->create();
         $this->actingAs($user);
 
@@ -27,12 +28,14 @@ class DestroyTest extends TestCase
         $response->assertStatus(302);
     }
 
-    public function testDestroyInvalidNoIdRoute(): void {
+    public function testDestroyInvalidNoIdRoute(): void
+    {
         $this->expectException(UrlGenerationException::class);
         route('bookmarks.destroy');
     }
 
-    public function testDestroyInvalidWrongId(): void {
+    public function testDestroyInvalidWrongId(): void
+    {
         $user = User::factory()->create();
         $this->actingAs($user);
 
@@ -40,11 +43,12 @@ class DestroyTest extends TestCase
         $response->assertStatus(302);
         $response->assertRedirect(route('index'));
         $response->assertSessionHas([
-            'error' => 'bookmark not found or could not be deleted'
+            'error' => 'bookmark not found or could not be deleted',
         ]);
     }
 
-    public function testDestroyInvalidAnotherUserRecord(): void {
+    public function testDestroyInvalidAnotherUserRecord(): void
+    {
         $user1 = User::factory()->create();
         $user2 = User::factory()->create();
         $this->actingAs($user1);
@@ -63,18 +67,19 @@ class DestroyTest extends TestCase
         $this->assertDatabaseCount('bookmarks', 2);
 
         $response = $this->delete(route('bookmarks.destroy', [
-            'id' => $bookmark2->id
+            'id' => $bookmark2->id,
         ]));
         $response->assertStatus(302);
         $response->assertRedirect(route('index'));
         $response->assertSessionHas([
-            'error' => 'bookmark not found or could not be deleted'
+            'error' => 'bookmark not found or could not be deleted',
         ]);
 
         $this->assertDatabaseCount('bookmarks', 2);
     }
 
-    public function testDestroySuccess(): void {
+    public function testDestroySuccess(): void
+    {
         $user = User::factory()->create();
         $this->actingAs($user);
 
@@ -93,20 +98,20 @@ class DestroyTest extends TestCase
         $this->assertDatabaseCount('bookmarks', 2);
 
         $response = $this->delete(route('bookmarks.destroy', [
-            'id' => $bookmarks[0]->id
+            'id' => $bookmarks[0]->id,
         ]));
         $response->assertStatus(302);
         $response->assertRedirect(route('index'));
         $response->assertSessionHas([
-            'success' => 'bookmark deleted successfully'
+            'success' => 'bookmark deleted successfully',
         ]);
 
         $this->assertDatabaseCount('bookmarks', 1);
         $this->assertDatabaseMissing('bookmarks', [
-            'id' => $bookmarks[0]->id
+            'id' => $bookmarks[0]->id,
         ]);
         $this->assertDatabaseHas('bookmarks', [
-            'id' => $bookmarks[1]->id
+            'id' => $bookmarks[1]->id,
         ]);
     }
 }

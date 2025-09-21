@@ -7,14 +7,16 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "ext-pdo": "*",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
+        "friendsofphp/php-cs-fixer": "^3.8",
+        "gordinskiy/line-length-checker": "^0.0.2",
         "larastan/larastan": "^3.6",
         "laravel/pail": "^1.2.2",
-        "laravel/pint": "^1.13",
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.6",
         "phpunit/phpunit": "^11.5.3"
@@ -32,18 +34,22 @@
         }
     },
     "scripts": {
+        "code-quality-check": [
+            "@static-analysis",
+            "@cs-check"
+        ],
+        "cs-check": "php-cs-fixer fix --dry-run -vv",
+        "cs-fix": "php-cs-fixer fix",
+        "phpstan": "phpstan analyse --memory-limit=2G",
         "post-autoload-dump": [
             "@php artisan config:clear",
             "@php artisan clear-compiled",
             "@php artisan package:discover --ansi"
         ],
+        "static-analysis": "@phpstan",
         "test": [
             "@php artisan config:clear --ansi",
             "@php artisan test"
-        ],
-        "phpstan": "phpstan analyse --memory-limit=2G",
-        "static-analysis": [
-            "@phpstan"
         ]
     },
     "extra": {

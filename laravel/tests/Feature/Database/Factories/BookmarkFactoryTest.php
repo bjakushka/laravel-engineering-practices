@@ -24,11 +24,13 @@ class BookmarkFactoryTest extends TestCase
 
         if ($bookmark->is_read) {
             $this->assertNotNull(
-                $bookmark->read_at, 'read_at should not be null if is_read is true'
+                $bookmark->read_at,
+                'read_at should not be null if is_read is true',
             );
         } else {
             $this->assertNull(
-                $bookmark->read_at, 'read_at should be null if is_read is false'
+                $bookmark->read_at,
+                'read_at should be null if is_read is false',
             );
         }
     }

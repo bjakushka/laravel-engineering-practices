@@ -10,14 +10,16 @@ class LogoutTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testLogoutForGuests(): void {
+    public function testLogoutForGuests(): void
+    {
         $response = $this->post(route('auth.logout'));
 
         $response->assertRedirect(route('auth.login'));
         $response->assertStatus(302);
     }
 
-    public function testLogoutForLoggedInUsers(): void {
+    public function testLogoutForLoggedInUsers(): void
+    {
         $user = User::factory()->create();
         $this->actingAs($user);
 
@@ -25,7 +27,7 @@ class LogoutTest extends TestCase
 
         $this->assertFalse(
             $this->isAuthenticated(),
-            'User is still authenticated after logout'
+            'User is still authenticated after logout',
         );
         $response->assertRedirect(route('index'));
         $response->assertStatus(302);

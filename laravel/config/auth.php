@@ -1,7 +1,8 @@
 <?php
 
-return [
+use App\Models\User;
 
+return [
     /*
     |--------------------------------------------------------------------------
     | Authentication Defaults
@@ -62,7 +63,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', App\Models\User::class),
+            'model' => env('AUTH_MODEL', User::class),
         ],
 
         // 'users' => [
@@ -123,5 +124,4 @@ return [
     */
 
     'allow_registration' => env('ALLOW_REGISTRATION', true),
-
 ];

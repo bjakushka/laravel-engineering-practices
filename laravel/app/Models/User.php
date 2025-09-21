@@ -6,7 +6,8 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Foundation\Auth\User AS AuthUser;
+use Illuminate\Foundation\Auth\User as AuthUser;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
 
 /**
@@ -19,8 +20,8 @@ use Illuminate\Support\Facades\Hash;
  * @property string $email The email address of the user.
  * @property string $password The hashed password of the user.
  * @property string|null $remember_token Token for "remember me" functionality.
- * @property \Illuminate\Support\Carbon|null $created_at Timestamp when the user was created.
- * @property \Illuminate\Support\Carbon|null $updated_at Timestamp when the user was last updated.
+ * @property Carbon|null $created_at Timestamp when the user was created.
+ * @property Carbon|null $updated_at Timestamp when the user was last updated.
  */
 class User extends AuthUser
 {
@@ -70,8 +71,8 @@ class User extends AuthUser
 
     /**
      * Automatically hash the password when setting it.
-     * @return Attribute<string, string>
-     *     The password attribute with hashing logic.
+     * @return Attribute<string, string> The password attribute with
+     *                                   hashing logic.
      */
     protected function password(): Attribute
     {

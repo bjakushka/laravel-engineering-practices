@@ -27,7 +27,8 @@ class LoginTest extends TestCase
         $response->assertStatus(302);
     }
 
-    public function testLoginRequestValidCredentials(): void {
+    public function testLoginRequestValidCredentials(): void
+    {
         $password = 'strong_password';
         $user = User::factory()->create([
             'password' => $password,
@@ -43,7 +44,8 @@ class LoginTest extends TestCase
         $response->assertStatus(302);
     }
 
-    public function testLoginRequestWrongPassword(): void {
+    public function testLoginRequestWrongPassword(): void
+    {
         $password = 'wrong_password';
         $user = User::factory()->create();
 
@@ -54,7 +56,7 @@ class LoginTest extends TestCase
 
         $this->assertFalse(
             $this->isAuthenticated(),
-            'User should not be authenticated with invalid credentials'
+            'User should not be authenticated with invalid credentials',
         );
         $response->assertSessionHasErrors([
             'email' => 'The provided credentials do not match our records.',
@@ -62,7 +64,8 @@ class LoginTest extends TestCase
         $response->assertStatus(302);
     }
 
-    public function testLoginRequestNotExistingUser(): void {
+    public function testLoginRequestNotExistingUser(): void
+    {
         $response = $this->post(route('auth.login'), [
             'email' => 'unknow@example.com',
             'password' => 'strong_password',
@@ -70,7 +73,7 @@ class LoginTest extends TestCase
 
         $this->assertFalse(
             $this->isAuthenticated(),
-            'User should not be authenticated with invalid credentials'
+            'User should not be authenticated with invalid credentials',
         );
         $response->assertSessionHasErrors([
             'email' => 'The provided credentials do not match our records.',
@@ -78,12 +81,13 @@ class LoginTest extends TestCase
         $response->assertStatus(302);
     }
 
-    public function testLoginRequestEmptyRequestData(): void {
+    public function testLoginRequestEmptyRequestData(): void
+    {
         $response = $this->post(route('auth.login'));
 
         $this->assertFalse(
             $this->isAuthenticated(),
-            'User should not be authenticated with invalid credentials'
+            'User should not be authenticated with invalid credentials',
         );
         $response->assertSessionHasErrors([
             'email' => 'The email field is required.',
@@ -92,7 +96,8 @@ class LoginTest extends TestCase
         $response->assertStatus(302);
     }
 
-    public function testLoginRequestNotValidEmail(): void {
+    public function testLoginRequestNotValidEmail(): void
+    {
         $response = $this->post(route('auth.login'), [
             'email' => 'not-an-email',
             'password' => 'strong_password',
@@ -100,7 +105,7 @@ class LoginTest extends TestCase
 
         $this->assertFalse(
             $this->isAuthenticated(),
-            'User should not be authenticated with invalid credentials'
+            'User should not be authenticated with invalid credentials',
         );
         $response->assertSessionHasErrors([
             'email' => 'The email field must be a valid email address.',
@@ -108,7 +113,8 @@ class LoginTest extends TestCase
         $response->assertStatus(302);
     }
 
-    public function testLoginRequestRememberMeOn(): void {
+    public function testLoginRequestRememberMeOn(): void
+    {
         $password = 'strong_password';
         $user = User::factory()->create([
             'password' => $password,
@@ -124,7 +130,8 @@ class LoginTest extends TestCase
         $response->assertCookie(Auth::guard()->getRecallerName());
     }
 
-    public function testLoginRequestRememberMeOff(): void {
+    public function testLoginRequestRememberMeOff(): void
+    {
         $password = 'strong_password';
         $user = User::factory()->create([
             'password' => $password,
@@ -140,7 +147,8 @@ class LoginTest extends TestCase
         $response->assertCookieMissing(Auth::guard()->getRecallerName());
     }
 
-    public function testLoginRequestRememberMeOffExplicit(): void {
+    public function testLoginRequestRememberMeOffExplicit(): void
+    {
         $password = 'strong_password';
         $user = User::factory()->create([
             'password' => $password,

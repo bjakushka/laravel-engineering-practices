@@ -11,7 +11,8 @@ class AuthController extends Controller
 {
     private AuthService $authService;
 
-    public function __construct(AuthService $authService) {
+    public function __construct(AuthService $authService)
+    {
         $this->authService = $authService;
     }
 
@@ -35,10 +36,11 @@ class AuthController extends Controller
             'email' => ['required', 'email'],
             'password' => ['required', 'string'],
         ]);
-        $remember = (bool) $request->input('remember', false);
+        $remember = (bool)$request->input('remember', false);
 
         if ($this->authService->login($credentials, $remember)) {
             $request->session()->regenerate();
+
             return redirect()->intended();
         }
 
@@ -57,10 +59,10 @@ class AuthController extends Controller
             'name' => ['required', 'string', 'min:3', 'max:255'],
             'email' => [
                 'required', 'email', 'max:255',
-                'unique:App\Models\User,email'
+                'unique:App\Models\User,email',
             ],
             'password' => [
-                'required', 'string', 'min:8', 'max:128', 'confirmed'
+                'required', 'string', 'min:8', 'max:128', 'confirmed',
             ],
         ]);
 

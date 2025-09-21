@@ -17,7 +17,8 @@ class CreateTest extends TestCase
         $response->assertStatus(302);
     }
 
-    public function testCreateAvailableForLoggedInUsers(): void {
+    public function testCreateAvailableForLoggedInUsers(): void
+    {
         $user = User::factory()->create();
         $this->actingAs($user);
 

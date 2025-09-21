@@ -22,7 +22,8 @@ class StoreTest extends TestCase
         $response->assertStatus(302);
     }
 
-    public function testCreateAvailableForLoggedInUsers(): void {
+    public function testCreateAvailableForLoggedInUsers(): void
+    {
         $user = User::factory()->create();
         $this->actingAs($user);
 
@@ -30,7 +31,8 @@ class StoreTest extends TestCase
         $response->assertStatus(302);
     }
 
-    public function testCreateInvalidUrl(): void {
+    public function testCreateInvalidUrl(): void
+    {
         $user = User::factory()->create();
         $this->actingAs($user);
 
@@ -40,12 +42,13 @@ class StoreTest extends TestCase
         ]);
 
         $response->assertSessionHasErrors([
-            'url' => 'The url field must be a valid URL.'
+            'url' => 'The url field must be a valid URL.',
         ]);
         $response->assertStatus(302);
     }
 
-    public function testCreateInvalidTitleEmpty(): void {
+    public function testCreateInvalidTitleEmpty(): void
+    {
         $user = User::factory()->create();
         $this->actingAs($user);
 
@@ -55,12 +58,13 @@ class StoreTest extends TestCase
         ]);
 
         $response->assertSessionHasErrors([
-            'title' => 'The title field is required.'
+            'title' => 'The title field is required.',
         ]);
         $response->assertStatus(302);
     }
 
-    public function testCreateInvalidTitleTooLong(): void {
+    public function testCreateInvalidTitleTooLong(): void
+    {
         $user = User::factory()->create();
         $this->actingAs($user);
 
@@ -70,12 +74,13 @@ class StoreTest extends TestCase
         ]);
 
         $response->assertSessionHasErrors([
-            'title' => 'The title field must not be greater than 255 characters.'
+            'title' => 'The title field must not be greater than 255 characters.',
         ]);
         $response->assertStatus(302);
     }
 
-    public function testCreateInvalidAction(): void {
+    public function testCreateInvalidAction(): void
+    {
         $user = User::factory()->create();
         $this->actingAs($user);
 
@@ -86,12 +91,13 @@ class StoreTest extends TestCase
         ]);
 
         $response->assertSessionHasErrors([
-            'action' => 'The selected action is invalid.'
+            'action' => 'The selected action is invalid.',
         ]);
         $response->assertStatus(302);
     }
 
-    public function testCreateInvalidActionEmpty(): void {
+    public function testCreateInvalidActionEmpty(): void
+    {
         $user = User::factory()->create();
         $this->actingAs($user);
 
@@ -102,15 +108,16 @@ class StoreTest extends TestCase
         ]);
 
         $response->assertSessionHasErrors([
-            'action' => 'The action field must be a string.'
+            'action' => 'The action field must be a string.',
         ]);
         $response->assertSessionHasErrors([
-            'action' => 'The selected action is invalid.'
+            'action' => 'The selected action is invalid.',
         ]);
         $response->assertStatus(302);
     }
 
-    public function testCreateValidDataNoAction(): void {
+    public function testCreateValidDataNoAction(): void
+    {
         $user = User::factory()->create();
         $this->actingAs($user);
 
@@ -127,27 +134,37 @@ class StoreTest extends TestCase
         $bookmark = Bookmark::query()->first();
         $this->assertNotNull($bookmark, 'Bookmark was not created');
         $this->assertEquals(
-            $user->id, $bookmark->user_id, 'User ID does not match'
+            $user->id,
+            $bookmark->user_id,
+            'User ID does not match',
         );
         $this->assertEquals(
-            'https://example.com', $bookmark->url, 'URL does not match'
+            'https://example.com',
+            $bookmark->url,
+            'URL does not match',
         );
         $this->assertEquals(
-            'Example', $bookmark->title, 'Title does not match'
+            'Example',
+            $bookmark->title,
+            'Title does not match',
         );
         $this->assertEquals(
-            $now->format('Y-m-d'), $bookmark->created_at->format('Y-m-d'),
-            'Creation date does not match'
+            $now->format('Y-m-d'),
+            $bookmark->created_at->format('Y-m-d'),
+            'Creation date does not match',
         );
         $this->assertEquals(
-            $bookmark->created_at->format('c'), $bookmark->updated_at->format('c'),
-            'Updated at should be the same as created at on creation'
+            $bookmark->created_at->format('c'),
+            $bookmark->updated_at->format('c'),
+            'Updated at should be the same as created at on creation',
         );
         $this->assertFalse(
-            $bookmark->is_read, 'is_read should be false on creation'
+            $bookmark->is_read,
+            'is_read should be false on creation',
         );
         $this->assertNull(
-            $bookmark->read_at, 'read_at should be null on creation'
+            $bookmark->read_at,
+            'read_at should be null on creation',
         );
 
         $response->assertStatus(302);
@@ -155,7 +172,8 @@ class StoreTest extends TestCase
         $response->assertSessionHas('success', 'bookmark created successfully');
     }
 
-    public function testCreateValidDataActionCreate(): void {
+    public function testCreateValidDataActionCreate(): void
+    {
         $user = User::factory()->create();
         $this->actingAs($user);
 
@@ -173,27 +191,37 @@ class StoreTest extends TestCase
         $bookmark = Bookmark::query()->first();
         $this->assertNotNull($bookmark, 'Bookmark was not created');
         $this->assertEquals(
-            $user->id, $bookmark->user_id, 'User ID does not match'
+            $user->id,
+            $bookmark->user_id,
+            'User ID does not match',
         );
         $this->assertEquals(
-            'https://example.com', $bookmark->url, 'URL does not match'
+            'https://example.com',
+            $bookmark->url,
+            'URL does not match',
         );
         $this->assertEquals(
-            'Example', $bookmark->title, 'Title does not match'
+            'Example',
+            $bookmark->title,
+            'Title does not match',
         );
         $this->assertEquals(
-            $now->format('Y-m-d'), $bookmark->created_at->format('Y-m-d'),
-            'Creation date does not match'
+            $now->format('Y-m-d'),
+            $bookmark->created_at->format('Y-m-d'),
+            'Creation date does not match',
         );
         $this->assertEquals(
-            $bookmark->created_at->format('c'), $bookmark->updated_at->format('c'),
-            'Updated at should be the same as created at on creation'
+            $bookmark->created_at->format('c'),
+            $bookmark->updated_at->format('c'),
+            'Updated at should be the same as created at on creation',
         );
         $this->assertFalse(
-            $bookmark->is_read, 'is_read should be false on creation'
+            $bookmark->is_read,
+            'is_read should be false on creation',
         );
         $this->assertNull(
-            $bookmark->read_at, 'read_at should be null on creation'
+            $bookmark->read_at,
+            'read_at should be null on creation',
         );
 
         $response->assertStatus(302);
@@ -201,7 +229,8 @@ class StoreTest extends TestCase
         $response->assertSessionHas('success', 'bookmark created successfully');
     }
 
-    public function testCreateValidDataActionCreateContinue(): void {
+    public function testCreateValidDataActionCreateContinue(): void
+    {
         $user = User::factory()->create();
         $this->actingAs($user);
 
@@ -219,27 +248,37 @@ class StoreTest extends TestCase
         $bookmark = Bookmark::query()->first();
         $this->assertNotNull($bookmark, 'Bookmark was not created');
         $this->assertEquals(
-            $user->id, $bookmark->user_id, 'User ID does not match'
+            $user->id,
+            $bookmark->user_id,
+            'User ID does not match',
         );
         $this->assertEquals(
-            'https://example.com', $bookmark->url, 'URL does not match'
+            'https://example.com',
+            $bookmark->url,
+            'URL does not match',
         );
         $this->assertEquals(
-            'Example', $bookmark->title, 'Title does not match'
+            'Example',
+            $bookmark->title,
+            'Title does not match',
         );
         $this->assertEquals(
-            $now->format('Y-m-d'), $bookmark->created_at->format('Y-m-d'),
-            'Creation date does not match'
+            $now->format('Y-m-d'),
+            $bookmark->created_at->format('Y-m-d'),
+            'Creation date does not match',
         );
         $this->assertEquals(
-            $bookmark->created_at->format('c'), $bookmark->updated_at->format('c'),
-            'Updated at should be the same as created at on creation'
+            $bookmark->created_at->format('c'),
+            $bookmark->updated_at->format('c'),
+            'Updated at should be the same as created at on creation',
         );
         $this->assertFalse(
-            $bookmark->is_read, 'is_read should be false on creation'
+            $bookmark->is_read,
+            'is_read should be false on creation',
         );
         $this->assertNull(
-            $bookmark->read_at, 'read_at should be null on creation'
+            $bookmark->read_at,
+            'read_at should be null on creation',
         );
 
         $response->assertStatus(302);

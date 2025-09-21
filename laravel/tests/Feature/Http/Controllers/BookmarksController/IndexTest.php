@@ -17,7 +17,8 @@ class IndexTest extends TestCase
         $response->assertStatus(302);
     }
 
-    public function testIndexAvailableForLoggedInUsers(): void {
+    public function testIndexAvailableForLoggedInUsers(): void
+    {
         $user = User::factory()->create();
         $this->actingAs($user);
 

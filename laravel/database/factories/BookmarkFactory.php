@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Bookmark;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -11,7 +13,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class BookmarkFactory extends Factory
 {
-    protected $model = \App\Models\Bookmark::class;
+    protected $model = Bookmark::class;
 
     /**
      * Define the model's default state.
@@ -28,7 +30,7 @@ class BookmarkFactory extends Factory
         }
 
         return [
-            'user_id' => \App\Models\User::factory(),
+            'user_id' => User::factory(),
             'url' => $this->faker->url(),
             'title' => $this->faker->sentence(),
             'is_read' => $isRead,

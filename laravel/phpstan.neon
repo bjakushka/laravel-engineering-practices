@@ -10,3 +10,4 @@ parameters:
         - database/seeders
     excludePaths:
         - vendor/
+        - config/
