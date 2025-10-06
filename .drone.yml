@@ -1,0 +1,130 @@
+kind: pipeline
+type: docker
+name: main
+
+trigger:
+  branch:
+    - master
+
+volumes:
+  - name: dockersock
+    # we need this to use host docker inside pipeline
+    # e.g. when building new image or modifying tags
+    host:
+      path: /var/run/docker.sock
+
+steps:
+  - name: test
+    image: docker:27.3-cli
+    volumes:
+      - name: dockersock
+        path: /var/run/docker.sock
+    environment:
+      APP_KEY:
+        from_secret: test_app_key
+      APP_ENV:
+        from_secret: test_app_env
+      APP_DEBUG:
+        from_secret: test_app_debug
+      DB_CONNECTION:
+        from_secret: test_db_connection
+      DB_DATABASE:
+        from_secret: test_db_database
+    commands:
+      - >
+        docker build --quiet --load
+        --target test
+        --tag reading-list-laravel:${DRONE_BUILD_NUMBER}-test
+        --file docker/laravel/Dockerfile laravel/
+        && echo "✓ test image built"
+
+      - >
+        docker run --rm
+        --env APP_KEY="$$APP_KEY"
+        --env APP_ENV="$$APP_ENV"
+        --env APP_DEBUG="$$APP_DEBUG"
+        --env DB_CONNECTION="$$DB_CONNECTION"
+        --env DB_DATABASE="$$DB_DATABASE"
+        reading-list-laravel:${DRONE_BUILD_NUMBER}-test
+        sh -c "php artisan migrate --force && composer run test"
+        && echo "✓ tests passed"
+
+      - docker rmi reading-list-laravel:${DRONE_BUILD_NUMBER}-test
+
+  - name: build-laravel
+    image: docker:27.3-cli
+    depends_on: [test]
+    volumes:
+      - name: dockersock
+        path: /var/run/docker.sock
+    commands:
+      - >
+        docker build --quiet
+        --load
+        --target production
+        --tag reading-list-laravel:${DRONE_BUILD_NUMBER}
+        --file docker/laravel/Dockerfile laravel/
+        && echo "✓ laravel image built"
+
+  - name: build-nginx
+    image: docker:27.3-cli
+    depends_on: [test]
+    volumes:
+      - name: dockersock
+        path: /var/run/docker.sock
+    commands:
+      - >
+        docker build --quiet
+        --load
+        --target production
+        --tag reading-list-nginx:${DRONE_BUILD_NUMBER}
+        --file docker/nginx/Dockerfile .
+        && echo "✓ nginx image built"
+
+  - name: deploy
+    image: docker:27.3-cli
+    depends_on: [build-laravel, build-nginx]
+    volumes:
+      - name: dockersock
+        path: /var/run/docker.sock
+    environment:
+      BUILD_NUMBER: ${DRONE_BUILD_NUMBER}
+      DATA_PATH:
+        from_secret: data_path
+      APP_KEY:
+        from_secret: app_key
+      APP_ENV:
+        from_secret: app_env
+      APP_DEBUG:
+        from_secret: app_debug
+      APP_URL:
+        from_secret: app_url
+      DB_CONNECTION: sqlite
+      NETWORK_NAME:
+        from_secret: network_name
+    commands:
+      - docker compose -f docker-compose.prod.yaml down || true
+      - docker compose -f docker-compose.prod.yaml up -d
+      - docker compose -f docker-compose.prod.yaml exec -T laravel php artisan migrate --force
+      - echo "✓ deployment completed"
+
+  - name: finalize
+    image: docker:27.3-cli
+    depends_on: [deploy]
+    when:
+      status: [success]
+    volumes:
+      - name: dockersock
+        path: /var/run/docker.sock
+    commands:
+      - docker tag reading-list-laravel:${DRONE_BUILD_NUMBER} reading-list-laravel:latest
+      - docker tag reading-list-nginx:${DRONE_BUILD_NUMBER} reading-list-nginx:latest
+      - |
+        docker images reading-list-laravel --format "{{.Tag}}" | grep -E '^[0-9]+$' | sort -n | head -n -2 | while read tag; do
+          docker rmi reading-list-laravel:$tag || true
+        done
+      - |
+        docker images reading-list-nginx --format "{{.Tag}}" | grep -E '^[0-9]+$' | sort -n | head -n -2 | while read tag; do
+          docker rmi reading-list-nginx:$tag || true
+        done
+      - echo "✓ release finalized"

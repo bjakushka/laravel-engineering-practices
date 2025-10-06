@@ -216,6 +216,27 @@ After starting or restarting the services, you may need to restart your external
 docker restart your_external_nginx_container
 ```
 
+## CI/CD Deployment
+
+The project uses Drone CI for automated testing and deployment.
+
+### Initial Setup
+
+1. **Add repository to Drone CI** and activate it
+2. **Create data directories on production server:**
+   ```bash
+   mkdir -p /opt/reading-list/data/sqlite
+   mkdir -p /opt/reading-list/data/storage/{app,framework/{sessions,cache,views},logs}
+   chown -R 1000:1000 /opt/reading-list/data
+   chmod -R 755 /opt/reading-list/data
+   ```
+3. **Add secrets in Drone CI web interface:**
+   - `test_app_key`, `test_app_env`, `test_app_debug`, `test_db_connection`, `test_db_database`
+   - `data_path`, `app_key`, `app_env`, `app_debug`, `app_url`, `network_name`
+4. **Push to master branch** to trigger pipeline
+
+Pipeline: test → build → deploy → cleanup (keeps last 2 builds for rollback)
+
 ## Testing
 
 The project uses PHPUnit for testing with a comprehensive test suite covering feature and unit tests.

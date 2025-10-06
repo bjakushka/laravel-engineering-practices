@@ -1,0 +1,39 @@
+services:
+  laravel:
+    # noinspection ComposeUnknownValues
+    image: reading-list-laravel:${BUILD_NUMBER:?BUILD_NUMBER required}
+    container_name: reading-list-laravel
+    volumes:
+      - ${DATA_PATH}/sqlite:/var/www/html/database/sqlite:rw
+      - ${DATA_PATH}/storage:/var/www/html/storage:rw
+    environment:
+      - APP_KEY
+      - APP_ENV
+      - APP_DEBUG
+      - APP_URL
+      - DB_CONNECTION
+      - DB_DATABASE=/var/www/html/database/sqlite/database.sqlite
+    expose:
+      - "9000"
+    networks:
+      - internal
+    restart: unless-stopped
+
+  nginx:
+    # noinspection ComposeUnknownValues
+    image: reading-list-nginx:${BUILD_NUMBER:?BUILD_NUMBER required}
+    container_name: reading-list-nginx
+    depends_on:
+      - laravel
+    networks:
+      - internal
+      - external
+    restart: unless-stopped
+
+networks:
+  internal:
+    driver: bridge
+
+  external:
+    external: true
+    name: ${NETWORK_NAME:-docker_external}
