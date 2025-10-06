@@ -17,7 +17,7 @@
 - [ X ] **Code Quality** - PHP CS Fixer for consistent formatting
 - [ X ] **Docker Setup** - Ready-to-use containers for development
 - [ X ] **Automation** - Makefile and composer scripts for common tasks
-- [ X ] **CI/CD Ready** - GitHub Actions configuration included
+- [ X ] **CI/CD** - Drone CI pipeline with automated testing and deployment
 
 ### Perfect For
 
@@ -80,6 +80,18 @@ make test    # Run tests
 make up      # Start Docker
 make down    # Stop Docker
 ```
+
+### 5. CI/CD Pipeline
+
+Drone CI automatically runs tests and deploys on every push to master:
+
+**Pipeline steps:**
+1. Run tests in isolated container
+2. Build production images (Laravel + Nginx)
+3. Deploy to server with zero downtime
+4. Cleanup old images
+
+**Configuration:** See `.drone.yml` for full pipeline setup
 
 ---
 
