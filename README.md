@@ -1,6 +1,87 @@
-# Reading List
+# Laravel Engineering Practices
 
-A web application for saving and organizing "read later" articles. A personal service to replace scattered browser bookmarks and text files for managing reading lists.
+> A Laravel project showing modern development practices: testing, code quality tools, and automation
+
+[![PHPStan Level](https://img.shields.io/badge/PHPStan-level%208-blue.svg)](https://phpstan.org/)
+[![PHP Version](https://img.shields.io/badge/PHP-8.4-777BB4.svg)](https://www.php.net/)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+
+## What This Project Is About
+
+**This is not just another CRUD app.** Yes, it's a simple bookmark manager, but the real focus is on **how the code is written and maintained**:
+
+### Key Practices Included
+
+- [ X ] **Testing** - Feature and unit tests with PHPUnit
+- [ X ] **Static Analysis** - PHPStan Level 8 (strictest type checking)
+- [ X ] **Code Quality** - PHP CS Fixer for consistent formatting
+- [ X ] **Docker Setup** - Ready-to-use containers for development
+- [ X ] **Automation** - Makefile and composer scripts for common tasks
+- [ X ] **CI/CD Ready** - GitHub Actions configuration included
+
+### Perfect For
+
+- **Learning** how to set up quality tools in Laravel
+- **Starting point** for new projects with good practices
+- **Portfolio** showing you care about code quality
+- **Reference** when setting up testing or CI/CD
+
+---
+
+## The Application
+
+Simple bookmark manager for "read later" articles. Basic CRUD operations with user authentication.
+
+**Why simple?** To keep focus on development practices, not complex business logic.
+
+---
+
+## Engineering Practices
+
+### 1. Testing
+
+Tests are organized by type:
+```
+tests/
+├── Feature/        # Testing HTTP endpoints and services
+├── Unit/           # Testing individual functions
+```
+
+Run tests:
+```bash
+docker exec reading-list-laravel composer test
+```
+
+### 2. Static Analysis
+
+PHPStan Level 8 checks your code for type errors:
+```bash
+docker exec reading-list-laravel composer static-analysis
+```
+
+### 3. Code Formatting
+
+PHP CS Fixer keeps code style consistent:
+```bash
+docker exec reading-list-laravel composer cs-check  # Check
+docker exec reading-list-laravel composer cs-fix    # Fix
+```
+
+### 4. Quick Commands
+
+All quality checks at once:
+```bash
+docker exec reading-list-laravel composer code-quality-check
+```
+
+Or use Makefile:
+```bash
+make test    # Run tests
+make up      # Start Docker
+make down    # Stop Docker
+```
+
+---
 
 ## Requirements
 
@@ -11,12 +92,12 @@ A web application for saving and organizing "read later" articles. A personal se
 
 ## Setup and Deployment
 
-Follow these steps to get "Reading List" up and running:
+Follow these steps to get the project up and running:
 
 1.  **Clone the Repository:**
     ```bash
-    git clone https://github.com/bjakushka/reading-list
-    cd reading-list
+    git clone https://github.com/bjakushka/laravel-engineering-practices
+    cd laravel-engineering-practices
     ```
 
 2.  **Build and Run Docker Compose Services:**
@@ -130,7 +211,7 @@ docker network ls
 
 ### Restarting External Nginx
 
-After starting or restarting Reading List services, you may need to restart your external nginx to refresh DNS resolution:
+After starting or restarting the services, you may need to restart your external nginx to refresh DNS resolution:
 ```bash
 docker restart your_external_nginx_container
 ```
